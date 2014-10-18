@@ -1,0 +1,19 @@
+{
+  "name": "address-book",
+  "description": "Simple Addressbook Application",
+  "version": "0.0.1",
+
+  "scripts": {
+    "start": "node address_book_server.js",
+    "test": "mocha -u tdd"
+  },
+
+  "dependencies": {
+    "express": "*",
+    "winston": "*",
+    "underscore": "*",
+    "fast-csv": "*",
+    "moment": "*",
+    "mocha": "*"
+  }
+}
