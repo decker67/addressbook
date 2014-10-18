@@ -3,9 +3,9 @@ AdressBook
 
 Simple nodejs example.
 
-setup with  
+- setup with:  
    npm install
-run tests with  
+- run tests with:  
    npm test
-and run server  with 
+- and run server with: 
    npm start
