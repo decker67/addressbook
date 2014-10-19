@@ -1,54 +1,58 @@
-'use strict';
+( function() {
+  'use strict';
 
-var _ = require( 'underscore');
 
-var addressBook;
+  var _ = require( 'underscore');
 
-var handler = {
-  1: numberOfWomenInAddressBook,
-  2: whoIsTheOldestPersonInAddressBook,
-  3: howManyDaysIsBillOlderThanPaul
-};
+  var addressBook;
 
-function initialise( model ) {
-  addressBook = model;
-}
+  var handler = {
+    1: numberOfWomenInAddressBook,
+    2: whoIsTheOldestPersonInAddressBook,
+    3: howManyDaysIsBillOlderThanPaul
+  };
 
-function handle( id ) {
-  var result = handler[ id ].call();
-  return id + '. ' + result + '<br/>';
-}
-
-function numberOfWomenInAddressBook() {
-  return _.countBy( addressBook.entries, function( person ) {
-    return person.isFemale() ? 'women' : 'man';
-  } )[ 'women' ];
-}
-
-function whoIsTheOldestPersonInAddressBook() {
-  return _.max( addressBook.entries, function( person ) {
-    return person.getAge();
-  }).getName();
-}
-
-function howManyDaysIsBillOlderThanPaul() {
-
-  function hasName( name, entry ) {
-    return entry.getName().indexOf( name ) !== -1;
+  function initialise( model ) {
+    addressBook = model;
   }
 
-  var bill = _.find( addressBook.entries, _.partial( hasName, 'Bill' )),
-      paul = _.find( addressBook.entries, _.partial( hasName, 'Paul' ) );
-  return paul.getBirthday().diff( bill.getBirthday(), 'days' );
-}
+  function handle( id ) {
+    var result = handler[ id ].call();
+    return id + '. ' + result + '<br/>';
+  }
 
-//---------------------------------------------------------------------------------------
-// Exports
-//---------------------------------------------------------------------------------------
+  function numberOfWomenInAddressBook() {
+    return _.countBy( addressBook.entries, function( person ) {
+      return person.isFemale() ? 'women' : 'man';
+    } )[ 'women' ];
+  }
 
-module.exports = {
+  function whoIsTheOldestPersonInAddressBook() {
+    return _.max( addressBook.entries, function( person ) {
+      return person.getAge();
+    }).getName();
+  }
 
-  setModel: initialise,
-  handleRequestWithId: handle
+  function howManyDaysIsBillOlderThanPaul() {
 
-};
+    function hasName( name, entry ) {
+      return entry.getName().indexOf( name ) !== -1;
+    }
+
+    var bill = _.find( addressBook.entries, _.partial( hasName, 'Bill' )),
+        paul = _.find( addressBook.entries, _.partial( hasName, 'Paul' ) );
+    return paul.getBirthday().diff( bill.getBirthday(), 'days' );
+  }
+
+  //---------------------------------------------------------------------------------------
+  // Exports
+  //---------------------------------------------------------------------------------------
+
+  module.exports = {
+
+    setModel: initialise,
+    handleRequestWithId: handle
+
+  };
+
+} )();

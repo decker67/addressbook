@@ -1,6 +1,7 @@
 'use strict';
 
-var phantom = require( 'phantom' );
+var phantom = require( 'phantom'),
+    assert = require( 'assert' );
 
 describe('Questions Service', function () {
   var browser, server;
@@ -17,22 +18,50 @@ describe('Questions Service', function () {
 
   it('should return 2 for the first question', function( done ) {
     browser.open('http://localhost:3000/questions/1', function( status ) {
+      assert.equal( status, 'success' );
+
       setTimeout(function () {
         browser.evaluate(function inBrowser() {
-          // this will be executed on a client-side
-          return window.APP;
-        }, function fromBrowser(result) {
-          //console.log( result, server );
-          // server-side asserts
-          //expect(server.APP.data.name).to.equal('Alex');
-          //expect(server.APP.data.secret).to.equal('Secret');
-          // client-side asserts
-          //expect(result.name).to.equal('Alex');
-          //expect(result.secret).to.equal('Secret');
+          return window.document.body;
+        }, function fromBrowser( result ) {
+          assert.equal( result.innerHTML, '1. 2<br>' );
           done();
         });
       }, 1000);
 
     });
   });
+
+  it('should return Wes Jackson for the second question', function( done ) {
+    browser.open('http://localhost:3000/questions/2', function( status ) {
+      assert.equal( status, 'success' );
+
+      setTimeout(function () {
+        browser.evaluate(function inBrowser() {
+          return window.document.body;
+        }, function fromBrowser( result ) {
+          assert.equal( result.innerHTML, '2. Wes Jackson<br>' );
+          done();
+        });
+      }, 1000);
+
+    });
+  });
+
+  it('should return 2862 for the second question', function( done ) {
+    browser.open('http://localhost:3000/questions/3', function( status ) {
+      assert.equal( status, 'success' );
+
+      setTimeout(function () {
+        browser.evaluate(function inBrowser() {
+          return window.document.body;
+        }, function fromBrowser( result ) {
+          assert.equal( result.innerHTML, '3. 2862<br>' );
+          done();
+        });
+      }, 1000);
+
+    });
+  });
+
 });

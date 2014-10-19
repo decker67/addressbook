@@ -1,24 +1,27 @@
-'use strict';
+( function() {
+  'use strict';
 
-var csv = require('fast-csv'),
-    Person = require('./person');
+  var csv = require('fast-csv'),
+      Person = require('./person');
 
-function readEntries() {
-  var entries = [];
+  function readEntries() {
+    var entries = [];
 
-  csv.fromPath( './data/address_book_data.csv')
-    .on( 'data', function( personLine ) {
-      entries.push( new Person( personLine) );
-    } );
-  return entries;
-}
+    csv.fromPath( './data/address_book_data.csv')
+      .on( 'data', function( personLine ) {
+        entries.push( new Person( personLine) );
+      } );
+    return entries;
+  }
 
-function AddressBook() {
-  this.entries = readEntries();
-}
+  function AddressBook() {
+    this.entries = readEntries();
+  }
 
-//---------------------------------------------------------------------------------------
-// Exports
-//---------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------
+  // Exports
+  //---------------------------------------------------------------------------------------
 
-module.exports = new AddressBook();
+  module.exports = new AddressBook();
+
+} )();
