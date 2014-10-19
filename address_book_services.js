@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require( 'underscore');
 
 var addressBook;
@@ -35,7 +37,7 @@ function howManyDaysIsBillOlderThanPaul() {
     return entry.getName().indexOf( name ) !== -1;
   }
 
-  var bill = _.find( addressBook.entries, _.partial( hasName, 'Bill' ) );
+  var bill = _.find( addressBook.entries, _.partial( hasName, 'Bill' )),
       paul = _.find( addressBook.entries, _.partial( hasName, 'Paul' ) );
   return paul.getBirthday().diff( bill.getBirthday(), 'days' );
 }

@@ -1,3 +1,5 @@
+'use strict';
+
 //---------------------------------------------------------------------------------------
 // Simple Address Book Application
 //---------------------------------------------------------------------------------------
@@ -23,26 +25,19 @@ function logRequest( request ) {
 //---------------------------------------------------------------------------------------
 // Routes
 //---------------------------------------------------------------------------------------
-application.get( '/questions',function( request, response ) {
-  logRequest( request );
-
-  var result;
-
-  result = addressBookServices.handleRequestWithId( '1' );
-  result += addressBookServices.handleRequestWithId( '2' );
-  result += addressBookServices.handleRequestWithId( '3' );
-
-  response.send( result );
-} );
-
-
-application.get( '/questions/:id',function( request, response ) {
+application.get( [ '/questions', '/questions/:id' ],function( request, response ) {
   logRequest( request );
 
   var result,
       questionId = request.params.id;
 
-  result = addressBookServices.handleRequestWithId( questionId );
+  if( !questionId ) {
+    result = addressBookServices.handleRequestWithId('1');
+    result += addressBookServices.handleRequestWithId('2');
+    result += addressBookServices.handleRequestWithId('3');
+  } else {
+    result = addressBookServices.handleRequestWithId(questionId);
+  }
 
   response.send( result );
 } );

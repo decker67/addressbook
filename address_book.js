@@ -1,5 +1,6 @@
-var fs = require('fs'),
-    csv = require('fast-csv'),
+'use strict';
+
+var csv = require('fast-csv'),
     Person = require('./person');
 
 function readEntries() {

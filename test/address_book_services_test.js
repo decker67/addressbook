@@ -1,5 +1,7 @@
+'use strict';
+
 var assert = require( 'assert'),
-    Person = require( '../person' );
+    Person = require( '../person'),
     address_book_service = require( '../address_book_services' );
 
 describe( 'AddressBookServices', function() {
