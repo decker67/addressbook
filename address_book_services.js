@@ -1,8 +1,8 @@
 ( function() {
   'use strict';
 
-
-  var _ = require( 'underscore');
+  var _ = require( 'underscore'),
+      assert = require( 'assert' );
 
   var addressBook;
 
@@ -13,10 +13,12 @@
   };
 
   function initialise( model ) {
+    assert( model, 'model should not be invalid!' );
     addressBook = model;
   }
 
   function handle( id ) {
+    assert( id, 'id should not be invalid!' );
     var result = handler[ id ].call();
     return id + '. ' + result + '<br/>';
   }

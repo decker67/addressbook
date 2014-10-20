@@ -16,6 +16,10 @@ describe('Questions Service', function () {
     });
   });
 
+  after( function() {
+    //phantom.close();
+  } );
+
   it('should return 2 for the first question', function( done ) {
     browser.open('http://localhost:3000/questions/1', function( status ) {
       assert.equal( status, 'success' );
@@ -25,6 +29,7 @@ describe('Questions Service', function () {
           return window.document.body;
         }, function fromBrowser( result ) {
           assert.equal( result.innerHTML, '1. 2<br>' );
+          //browser.exit();
           done();
         });
       }, 1000);
@@ -41,6 +46,7 @@ describe('Questions Service', function () {
           return window.document.body;
         }, function fromBrowser( result ) {
           assert.equal( result.innerHTML, '2. Wes Jackson<br>' );
+          //browser.exit();
           done();
         });
       }, 1000);
@@ -48,7 +54,7 @@ describe('Questions Service', function () {
     });
   });
 
-  it('should return 2862 for the second question', function( done ) {
+  it('should return 2862 for the third question', function( done ) {
     browser.open('http://localhost:3000/questions/3', function( status ) {
       assert.equal( status, 'success' );
 
@@ -57,6 +63,7 @@ describe('Questions Service', function () {
           return window.document.body;
         }, function fromBrowser( result ) {
           assert.equal( result.innerHTML, '3. 2862<br>' );
+          //browser.exit();
           done();
         });
       }, 1000);
