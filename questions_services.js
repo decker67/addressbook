@@ -17,10 +17,20 @@
     addressBook = model;
   }
 
-  function handle( id ) {
+  function handleId( id ) {
     assert( id, 'id should not be invalid!' );
     var result = handler[ id ].call();
     return id + '. ' + result + '<br/>';
+  }
+
+  function handle( id ) {
+    if ( id ) {
+      return handleId( id );
+    } else {
+      return _.reduce( _.keys( handler ), function( result, id ) {
+        return result + handleId( id );
+      }, '');
+    }
   }
 
   function numberOfWomenInAddressBook() {
@@ -52,8 +62,8 @@
 
   module.exports = {
 
-    setModel: initialise,
-    handleRequestWithId: handle
+    inject: initialise,
+    handle: handle
 
   };
 

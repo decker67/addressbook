@@ -6,39 +6,27 @@
   //---------------------------------------------------------------------------------------
 
   var configuration = require('./configuration.json'),
-    express = require('express'),
-    winston = require('winston'),
-    addressBook = require('./address_book'),
-    addressBookServices = require('./address_book_services');
+      express = require('express'),
+      winston = require('winston');
 
-  var application = express();
+  var application = express(),
+      service_handler = {};
 
-  //---------------------------------------------------------------------------------------
-  // Helper Functions
-  //---------------------------------------------------------------------------------------
-  function logRequest(request) {
-    winston.info(
-        'request-method="' + request.method + '", '
-        + 'request-path="' + request.path + '",  '
-        + 'request-parameters="' + request.params.id + '"');
-  }
+  // initialize services handler and models configured
+  Array.prototype.forEach.call( configuration.entities, function( entity ) {
+    var model = require( './' + entity.name + '_model' );
+    var handler = require( './' + entity.name + '_services' );
+    handler.inject( model );
+    service_handler[ entity.name ] = handler;
+  } );
 
   //---------------------------------------------------------------------------------------
   // Routes
   //---------------------------------------------------------------------------------------
-  application.get([ '/questions', '/questions/:id' ], function (request, response) {
-    logRequest(request);
-
-    var result,
-      questionId = request.params.id;
-
-    if (!questionId) {
-      result = addressBookServices.handleRequestWithId('1');
-      result += addressBookServices.handleRequestWithId('2');
-      result += addressBookServices.handleRequestWithId('3');
-    } else {
-      result = addressBookServices.handleRequestWithId(questionId);
-    }
+  application.use( /.*/, function (request, response) {
+    var url_parts = request.baseUrl.split( '/');
+    var service_path = url_parts[ 1 ];
+    var result = service_handler[ service_path ].handle( url_parts[ 2 ] );
 
     response.send(result);
   });
@@ -46,12 +34,7 @@
   //---------------------------------------------------------------------------------------
   // Initialisation
   //---------------------------------------------------------------------------------------
-
-  var port = configuration.port;
-
-  addressBookServices.setModel(addressBook);
-
-  application.listen(port);
-  winston.info('Webserver is listening on port ' + port + '\n');
+  application.listen( configuration.port );
+  winston.info('Webserver is listening on port ' + configuration.port + '\n');
 
 } )();
