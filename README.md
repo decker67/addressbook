@@ -1,5 +1,5 @@
-AdressBook
-==========
+AddressBook
+===========
 
 Simple nodejs example.
 
