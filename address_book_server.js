@@ -26,7 +26,9 @@
   application.use( /.*/, function (request, response) {
     var url_parts = request.baseUrl.split( '/');
     var service_path = url_parts[ 1 ];
-    var result = service_handler[ service_path ].handle( url_parts[ 2 ] );
+    if( service_handler[ service_path ] ) {
+      var result = service_handler[ service_path ].handle( url_parts[ 2 ] );
+    }
 
     response.send(result);
   });
